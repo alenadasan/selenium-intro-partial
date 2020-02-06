@@ -15,4 +15,5 @@ public class LoginPage {
 
     @FindBy(tagName = "h1")
     private WebElement title;
+
 }
