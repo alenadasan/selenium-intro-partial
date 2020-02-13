@@ -13,10 +13,9 @@ public class ContactPage {
 
 
     public List<String> getErrorMessages() {
-
         List<String> messages = new ArrayList<String>();
 
-        for(WebElement e : errorMessages) {
+        for (WebElement e : errorMessages) {
             messages.add(e.getText());
         }
 
