@@ -23,14 +23,17 @@ public class LoginPage {
     @FindBy(partialLinkText = "Forgot password?")
     private WebElement forgotPasswordLink;
 
-    @FindBy(id = "Email-error")
+    @FindBy(xpath = "//div[contains(@class, 'message-error')]")
     private WebElement errorMessage;
+
+    private FooterSection footer;
 
     protected WebDriver driver;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        footer = new FooterSection(driver);
     }
 
     public void loginAs(String email, String pass) {
@@ -61,5 +64,9 @@ public class LoginPage {
 
     public boolean isUserLoggedIn() {
         return logInMenuLink.getText().contains("Log out");
+    }
+
+    public FooterSection getFooter() {
+        return footer;
     }
 }

@@ -1,16 +1,62 @@
 package pages;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactPage {
 
+    @FindBy(id = "FullName")
+    private WebElement fullNameInput;
+    @FindBy(id = "Email")
+    private WebElement emailInput;
+    @FindBy(id = "Enquiry")
+    private WebElement enquiryInput;
+    @FindBy(name = "send-email")
+    private WebElement sendEmailButton;
+
+    @FindBy(className = "result")
+    private WebElement confirmationMessage;
     @FindBy(xpath = "//span[contains(@id, '-error')]")
     private List<WebElement> errorMessages;
 
+    protected WebDriver driver;
+
+
+    public ContactPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public void sendContact(String name, String email, String enquiry) {
+        fillInName(name);
+        fillInEmail(email);
+        fillInEnquiry(enquiry);
+        sendEmailButton.click();
+    }
+
+    public void fillInName(String name) {
+        fullNameInput.clear();
+        fullNameInput.sendKeys(name);
+    }
+
+    public void fillInEmail(String email) {
+        emailInput.clear();
+        emailInput.sendKeys(email);
+    }
+
+    public void fillInEnquiry(String enquiry) {
+        enquiryInput.clear();
+        enquiryInput.sendKeys(enquiry);
+    }
+
+    public String getConfirmationMessage() {
+        return confirmationMessage.getText();
+    }
 
     public List<String> getErrorMessages() {
         List<String> messages = new ArrayList<String>();
@@ -20,5 +66,17 @@ public class ContactPage {
         }
 
         return messages;
+    }
+
+    public String getName() {
+        return fullNameInput.getAttribute("value");
+    }
+
+    public String getEmail() {
+        return emailInput.getAttribute("value");
+    }
+
+    public String getEnquiry() {
+        return enquiryInput.getAttribute("value");
     }
 }

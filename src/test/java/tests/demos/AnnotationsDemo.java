@@ -1,10 +1,8 @@
-package tests;
+package tests.demos;
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class AnnotationsTestDemo {
+public class AnnotationsDemo {
 
     @BeforeAll
     public static void oneTimeSetup() {
@@ -24,8 +22,6 @@ public class AnnotationsTestDemo {
     @Test
     public void testTwo() {
         System.out.println("Running @Test Two");
-
-        WebDriver driver = new ChromeDriver();
     }
 
     @AfterEach
