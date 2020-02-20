@@ -2,7 +2,6 @@ package tests;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,7 +11,9 @@ import pages.LoginPage;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class ContactTest {
 
@@ -42,7 +43,6 @@ public class ContactTest {
         assertThat(contactPage.getErrorMessages(), contains("Enter your name", "Enter email", "Enter enquiry"));
     }
 
-    @Disabled
     @Test
     void whenUserIsLoggedIn_personalDetailsAreFilledInTheContactForm() {
         driver.get("https://demo.nopcommerce.com/login");
@@ -53,6 +53,20 @@ public class ContactTest {
 
         assertThat(contactPage.getName(), is("Ale Test"));
         assertThat(contactPage.getEmail(), is("ale.nadasan@mailnesia.com"));
+    }
+
+    @Test
+    void whenUserIsLoggedIn_personalDetailsAreFilledInTheContactForm_withAssertAll() {
+        driver.get("https://demo.nopcommerce.com/login");
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.loginAs("ale.nadasan@mailnesia.com", "1qa2ws3ed");
+        ContactPage contactPage = loginPage.getFooter().goToContactPage();
+
+        assertAll("Form should contains logged in user's details",
+                () -> assertThat(contactPage.getName(), is("Ale Test")),
+                () -> assertThat(contactPage.getEmail(), is("ale.nadasan@mailnesia.com"))
+        );
     }
 
     @AfterEach
