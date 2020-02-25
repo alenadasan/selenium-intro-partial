@@ -1,40 +1,34 @@
 package tests;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.LoginPage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class LoginTest {
+public class LoginTest extends TestBase {
 
-    protected WebDriver driver;
+    private LoginPage loginPage;
+
+    private final String email = "ale.nadasan@mailnesia.com";
+    private final String pass = "1qa2ws3ed";
 
     @BeforeEach
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "/Users/Ale/workspace/chromedriver");
-        driver = new ChromeDriver();
-
         driver.get("https://demo.nopcommerce.com/login");
+        loginPage = new LoginPage(driver);
     }
 
     @Test
     public void canLoginWithValidCredentials() {
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.loginAs("ale.nadasan@mailnesia.com", "1qa2ws3ed");
+        loginPage.loginAs(email, pass);
 
         assertThat(loginPage.getLoginMessage(), is("Log out"));
     }
 
     @Test
     public void cannotLoginWithInvalidEmail() {
-        LoginPage loginPage = new LoginPage(driver);
-
         loginPage.loginAs("ale.nadasan@gmail.com", "123456");
 
         assertThat(loginPage.getErrorMessage(), is("Login was unsuccessful. Please correct the errors and try again." +
@@ -43,9 +37,7 @@ public class LoginTest {
 
     @Test
     public void cannotLoginWithInvalidPassword() {
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.loginAs("ale.nadasan@mailnesia.com", "invalid");
+        loginPage.loginAs(email, "invalid");
 
         assertThat(loginPage.getErrorMessage(), is("Login was unsuccessful. Please correct the errors and try again." +
                 "\nThe credentials provided are incorrect"));
@@ -53,16 +45,9 @@ public class LoginTest {
 
     @Test
     public void cannotLoginWithNoPassword() {
-        LoginPage loginPage = new LoginPage(driver);
-
-        loginPage.loginAs("ale.nadasan@mailnesia.com", "");
+        loginPage.loginAs(email, "");
 
         assertThat(loginPage.getErrorMessage(), is("Login was unsuccessful. Please correct the errors and try again." +
                 "\nThe credentials provided are incorrect"));
-    }
-
-    @AfterEach
-    public void tearDown() {
-        driver.quit();
     }
 }

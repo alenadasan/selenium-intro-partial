@@ -9,7 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MatchersDemo {
+public class HamcrestMatchersDemo {
 
     @Test
     void canAssertStuffDifferentWays() {
@@ -18,6 +18,7 @@ public class MatchersDemo {
         assertTrue(s.equals("Lorem ipsum"));
         assertFalse(s.equals("Lorem ipsumus"));
         assertEquals(s, "Lorem ipsum");
+
         assertThat(s, equalTo("Lorem ipsum"));
     }
 
@@ -69,4 +70,17 @@ public class MatchersDemo {
         assertThat(list, hasSize(3));
     }
 
+    @Test
+    void canDoSomeMoreListAsserts() {
+        List<String> s3 = Arrays.asList("dolor", "sit", "amet", "sum");
+
+        assertThat(s3.size(), greaterThanOrEqualTo(2));
+        assertThat(s3, hasItem("sit"));
+        assertThat(s3, contains("dolor", "sit", "amet", "sum"));
+
+        assertThat(s3, hasItems("amet", "sum"));
+
+        assertThat(s3, anyOf(hasItem("sun"), hasItem("sum"), hasItem("sur")));
+        assertThat(s3, either(hasItem("sun")).or(hasItem("sum")).or(hasItem("sur")));
+    }
 }

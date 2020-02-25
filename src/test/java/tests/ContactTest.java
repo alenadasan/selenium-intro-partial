@@ -1,10 +1,7 @@
 package tests;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.ContactPage;
 import pages.LoginPage;
 
@@ -15,15 +12,10 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-public class ContactTest {
-
-    protected WebDriver driver;
+public class ContactTest extends TestBase {
 
     @BeforeEach
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "/Users/Ale/workspace/chromedriver");
-        driver = new ChromeDriver();
-
         driver.get("https://demo.nopcommerce.com/contactus");
     }
 
@@ -67,10 +59,5 @@ public class ContactTest {
                 () -> assertThat(contactPage.getName(), is("Ale Test")),
                 () -> assertThat(contactPage.getEmail(), is("ale.nadasan@mailnesia.com"))
         );
-    }
-
-    @AfterEach
-    public void tearDown() {
-        driver.quit();
     }
 }

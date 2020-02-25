@@ -3,12 +3,11 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactPage {
+public class ContactPage extends PageBase {
 
     @FindBy(id = "FullName")
     private WebElement fullNameInput;
@@ -24,12 +23,8 @@ public class ContactPage {
     @FindBy(xpath = "//span[contains(@id, '-error')]")
     private List<WebElement> errorMessages;
 
-    protected WebDriver driver;
-
-
     public ContactPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super(driver);
     }
 
     public void sendContact(String name, String email, String enquiry) {

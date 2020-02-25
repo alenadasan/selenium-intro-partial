@@ -1,12 +1,13 @@
 package pages;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-public class RegisterPage {
+public class RegisterPage extends PageBase{
 
     @FindBy(name = "Gender")
     private List<WebElement> genderRadioButtons;
@@ -38,6 +39,10 @@ public class RegisterPage {
 
     @FindBy(id = "register-button")
     private WebElement registerButton;
+
+    public RegisterPage(WebDriver driver) {
+        super(driver);
+    }
 
     public void registerAs(String gender, String firstName, String lastName, int day, String month, int year,
                            String email, String companyName, boolean wantsNewsletter,

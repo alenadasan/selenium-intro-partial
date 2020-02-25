@@ -1,23 +1,20 @@
 package pages;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultsPage {
+public class ResultsPage extends PageBase {
 
     @FindBy(className = "product-title")
     private List<WebElement> productTitleList;
 
-    private WebDriver driver;
-
     public ResultsPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super(driver);
     }
 
     public List<String> getProductTitles() {
@@ -28,5 +25,10 @@ public class ResultsPage {
         }
 
         return titles;
+    }
+
+    public String getAlertNotification() {
+        Alert alert = driver.switchTo().alert();
+        return alert.getText();
     }
 }

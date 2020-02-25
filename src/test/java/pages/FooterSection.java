@@ -3,7 +3,6 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -12,18 +11,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
-public class FooterSection {
+public class FooterSection extends PageBase {
 
     @FindBy(partialLinkText = "Contact us")
     private WebElement contactUsLink;
     @FindBy(xpath = "//ul[@class='networks']//a")
     private List<WebElement> socialMediaLinks;
 
-    protected WebDriver driver;
-
     public FooterSection(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super(driver);
     }
 
     public ContactPage goToContactPage() {

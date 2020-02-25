@@ -2,7 +2,7 @@ package tests.demos;
 
 import org.junit.jupiter.api.*;
 
-public class AnnotationsDemo {
+public class JUnitAnnotationsDemo {
 
     @BeforeAll
     public static void oneTimeSetup() {
