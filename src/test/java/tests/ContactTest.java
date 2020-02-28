@@ -22,6 +22,7 @@ public class ContactTest extends TestBase {
     @Test
     public void canSendAContactMessage_whenEnteringValidCredentials() {
         ContactPage contactPage = new ContactPage(driver);
+
         contactPage.sendContact("Jim", "jim@mailnesia.com", UUID.randomUUID().toString());
 
         assertThat(contactPage.getConfirmationMessage(), is("Your enquiry has been successfully sent to the store owner."));
@@ -30,6 +31,7 @@ public class ContactTest extends TestBase {
     @Test
     public void cannotSendAContactMessage_withoutFillingInMandatoryFields() {
         ContactPage contactPage = new ContactPage(driver);
+
         contactPage.sendContact("", "", "");
 
         assertThat(contactPage.getErrorMessages(), contains("Enter your name", "Enter email", "Enter enquiry"));

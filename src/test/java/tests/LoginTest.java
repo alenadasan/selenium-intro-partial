@@ -2,17 +2,23 @@ package tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import pages.LoginPage;
+
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public class LoginTest extends TestBase {
 
     private LoginPage loginPage;
 
-    private final String email = "ale.nadasan@mailnesia.com";
-    private final String pass = "1qa2ws3ed";
+    private final static String TEST_EMAIL = "ale.nadasan@mailnesia.com";
+    private final static String TEST_PASSWORD = "1qa2ws3ed";
 
     @BeforeEach
     public void setUp() {
@@ -22,7 +28,7 @@ public class LoginTest extends TestBase {
 
     @Test
     public void canLoginWithValidCredentials() {
-        loginPage.loginAs(email, pass);
+        loginPage.loginAs(TEST_EMAIL, TEST_PASSWORD);
 
         assertThat(loginPage.getLoginMessage(), is("Log out"));
     }
@@ -37,7 +43,7 @@ public class LoginTest extends TestBase {
 
     @Test
     public void cannotLoginWithInvalidPassword() {
-        loginPage.loginAs(email, "invalid");
+        loginPage.loginAs(TEST_EMAIL, "invalid");
 
         assertThat(loginPage.getErrorMessage(), is("Login was unsuccessful. Please correct the errors and try again." +
                 "\nThe credentials provided are incorrect"));
@@ -45,9 +51,28 @@ public class LoginTest extends TestBase {
 
     @Test
     public void cannotLoginWithNoPassword() {
-        loginPage.loginAs(email, "");
+        loginPage.loginAs(TEST_EMAIL, "");
 
         assertThat(loginPage.getErrorMessage(), is("Login was unsuccessful. Please correct the errors and try again." +
                 "\nThe credentials provided are incorrect"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("credentialsAndErrorMessagesProvider")
+    public void cannotLoginWithInvalidCredentials(String email, String pass, String expectedError) {
+        loginPage.loginAs(email, pass);
+
+        assertThat(loginPage.getErrorMessage(), is(expectedError));
+    }
+
+    static Stream<Arguments> credentialsAndErrorMessagesProvider() {
+        return Stream.of(
+                arguments("ale.nadasan@mailnesia.com", "wrongPass", "Login was unsuccessful. Please correct the errors and try again." +
+                        "\nThe credentials provided are incorrect"),
+                arguments("wrongEmail@mailensia.com", "pass", "Login was unsuccessful. Please correct the errors and try again." +
+                        "\nNo customer account found"),
+                arguments("ale.nadasan@mailnesia.com", "", "Login was unsuccessful. Please correct the errors and try again." +
+                        "\nThe credentials provided are incorrect")
+        );
     }
 }
