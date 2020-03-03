@@ -37,6 +37,7 @@ public class HomePage extends PageBase {
 
     public void addToCartFeaturedProductWithIndex(int index) {
         addToCartButtons.get(index).click();
+        headerSection.waitForConfirmationBarToHide();
     }
 
     public HeaderSection getHeaderSection() {
