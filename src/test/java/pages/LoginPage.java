@@ -3,35 +3,32 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends PageBase {
 
-    @FindBy(partialLinkText = "Log")
-    private WebElement logInMenuLink;
-
-    @FindBy(tagName = "h1") //@FindBy(xpath="//h1")
+    @FindBy(tagName = "h1")
     private WebElement title;
-
     @FindBy(id = "Email")
     private WebElement emailInput;
     @FindBy(id = "Password")
     private WebElement passwordInput;
     @FindBy(xpath = "//input[@value='Log in']")
     private WebElement logInButton;
-
     @FindBy(partialLinkText = "Forgot password?")
     private WebElement forgotPasswordLink;
-
     @FindBy(xpath = "//div[contains(@class, 'message-error')]")
     private WebElement errorMessage;
 
+    private HeaderSection header;
     private FooterSection footer;
-
-    protected WebDriver driver;
 
     public LoginPage(WebDriver driver) {
         super(driver);
+        header = new HeaderSection(driver);
         footer = new FooterSection(driver);
+
+        wait.until(ExpectedConditions.urlContains("login"));
     }
 
     public void loginAs(String email, String pass) {
@@ -56,12 +53,8 @@ public class LoginPage extends PageBase {
         return errorMessage.getText();
     }
 
-    public String getLoginMessage() {
-        return logInMenuLink.getText();
-    }
-
-    public boolean isUserLoggedIn() {
-        return logInMenuLink.getText().contains("Log out");
+    public HeaderSection getHeader() {
+        return header;
     }
 
     public FooterSection getFooter() {

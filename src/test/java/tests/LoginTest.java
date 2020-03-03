@@ -30,7 +30,7 @@ public class LoginTest extends TestBase {
     public void canLoginWithValidCredentials() {
         loginPage.loginAs(TEST_EMAIL, TEST_PASSWORD);
 
-        assertThat(loginPage.getLoginMessage(), is("Log out"));
+        assertThat(loginPage.getHeader().getLoginMessage(), is("Log out"));
     }
 
     @Test

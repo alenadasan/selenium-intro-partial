@@ -7,7 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-public class RegisterPage extends PageBase{
+import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
+
+public class RegisterPage extends PageBase {
 
     @FindBy(name = "Gender")
     private List<WebElement> genderRadioButtons;
@@ -40,8 +42,15 @@ public class RegisterPage extends PageBase{
     @FindBy(id = "register-button")
     private WebElement registerButton;
 
+    protected HeaderSection headerSection;
+    protected FooterSection footerSection;
+
     public RegisterPage(WebDriver driver) {
         super(driver);
+
+        headerSection = new HeaderSection(driver);
+        footerSection = new FooterSection(driver);
+        wait.until(urlContains("register"));
     }
 
     public void registerAs(String gender, String firstName, String lastName, int day, String month, int year,
@@ -67,7 +76,7 @@ public class RegisterPage extends PageBase{
     }
 
     public void setGender(String gender) {
-        if(gender.equalsIgnoreCase("male"))
+        if (gender.equalsIgnoreCase("male"))
             genderRadioButtons.get(0).click();
         else
             genderRadioButtons.get(1).click();
@@ -96,7 +105,7 @@ public class RegisterPage extends PageBase{
     }
 
     public void setNewsletterSelection(boolean wantsNewsletter) {
-        if(wantsNewsletter == true && newsletterSubscriptionCheckbox.isSelected() == false)
+        if (wantsNewsletter == true && newsletterSubscriptionCheckbox.isSelected() == false)
             clickRegister(newsletterSubscriptionCheckbox);
     }
 
@@ -110,5 +119,13 @@ public class RegisterPage extends PageBase{
 
     public void clickRegister(WebElement registerButton) {
         registerButton.click();
+    }
+
+    public HeaderSection getHeaderSection() {
+        return headerSection;
+    }
+
+    public FooterSection getFooterSection() {
+        return footerSection;
     }
 }

@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
+
 public class ContactPage extends PageBase {
 
     @FindBy(id = "FullName")
@@ -25,6 +27,7 @@ public class ContactPage extends PageBase {
 
     public ContactPage(WebDriver driver) {
         super(driver);
+        wait.until(urlContains("contactus"));
     }
 
     public void sendContact(String name, String email, String enquiry) {

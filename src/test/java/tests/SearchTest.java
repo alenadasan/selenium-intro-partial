@@ -30,7 +30,7 @@ public class SearchTest extends TestBase {
     public void canSearchForAnExistingItem() {
         String query = "book";
 
-        ResultsPage resultsPage = homePage.searchFor(query);
+        ResultsPage resultsPage = homePage.getHeaderSection().searchFor(query);
         List<String> productTitles = resultsPage.getProductTitles();
 
         for (String title : productTitles) {
@@ -42,7 +42,7 @@ public class SearchTest extends TestBase {
     @ParameterizedTest
     @ValueSource(strings = {"book", "computer", "HTC"})
     public void canSearchForExistingItems(String query) {
-        ResultsPage resultsPage = homePage.searchFor(query);
+        ResultsPage resultsPage = homePage.getHeaderSection().searchFor(query);
         List<String> productTitles = resultsPage.getProductTitles();
 
         for (String title : productTitles) {
@@ -53,7 +53,7 @@ public class SearchTest extends TestBase {
 
     @Test
     public void cannotSearchForEmptyString() {
-        ResultsPage resultsPage = homePage.searchFor("");
+        ResultsPage resultsPage = homePage.getHeaderSection().searchFor("");
 
         assertThat(resultsPage.getAlertNotification(), is("Please enter some search keyword"));
     }
@@ -61,7 +61,7 @@ public class SearchTest extends TestBase {
     @ParameterizedTest
     @MethodSource("stringsProvider")
     public void cannotSearchForInvalidItems(String query, String expectedWarningMessage) {
-        ResultsPage resultsPage = homePage.searchFor(query);
+        ResultsPage resultsPage = homePage.getHeaderSection().searchFor(query);
 
         assertThat(resultsPage.getWarningMessage(), is(expectedWarningMessage));
     }
@@ -77,7 +77,7 @@ public class SearchTest extends TestBase {
     @ParameterizedTest
     @CsvFileSource(resources = "/NopCommerceSearchItems.csv", numLinesToSkip = 1)
     public void canSearchForExistingItemsFromCSVFile(String query) {
-        ResultsPage resultsPage = homePage.searchFor(query);
+        ResultsPage resultsPage = homePage.getHeaderSection().searchFor(query);
         List<String> productTitles = resultsPage.getProductTitles();
 
         assertThat(productTitles.size(), greaterThan(0));

@@ -10,5 +10,10 @@ public class GoogleSearchPage {
     @FindBy(xpath = "(//input[@name='btnK'])[2]")
     private WebElement searchButton;
 
+    public void searchFor(String query) {
+        searchInput.clear();
+        searchInput.sendKeys(query);
+        searchButton.click();
+    }
 
 }

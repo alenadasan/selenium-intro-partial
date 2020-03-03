@@ -7,58 +7,43 @@ import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 public class HomePage extends PageBase {
 
-    @FindBy(id = "small-searchterms")
-    private WebElement searchInput;
-    @FindBy(xpath = "//input[@value='Search']")
-    private WebElement searchButton;
+    @FindBy(className = "product-title")
+    private List<WebElement> featuredProductsTitles;
+    @FindBy(xpath = "//input[@value='Add to cart']")
+    private List<WebElement> addToCartButtons;
 
-    @FindBy(xpath = "//ul[@class='top-menu notmobile']/li/a")
-    private List<WebElement> menuItems;
+    private HeaderSection headerSection;
+    private FooterSection footerSection;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
+
+        headerSection = new HeaderSection(driver);
+        footerSection = new FooterSection(driver);
     }
 
-    public ResultsPage searchFor(String query) {
-        searchInput.clear();
-        searchInput.sendKeys(query);
-        searchButton.click();
+    public List<String> getFeaturedProductTitles() {
+        List<String> productTitles = new ArrayList<>();
 
-        return new ResultsPage(driver);
-    }
-
-    public void selectMenuItem(String itemName) {
-        List<String> stringItems = getMenuItems();
-
-        if(stringItems.contains(itemName)) {
-            int itemIndex = stringItems.indexOf(itemName);
-            menuItems.get(itemIndex).click();
-        } else
-            fail("Menu item " + itemName + " not available");
-    }
-
-//    TODO
-    public void selectMenuItem(String itemName, String subCategoryName) {
-        List<String> stringItems = getMenuItems();
-
-        if(stringItems.contains(itemName)) {
-            int itemIndex = stringItems.indexOf(itemName);
-            menuItems.get(itemIndex).click();
-
-        } else
-            fail("Menu item " + itemName + " not available");
-    }
-
-    public List<String> getMenuItems() {
-        List<String> stringItems = new ArrayList<>();
-        for (WebElement item : menuItems) {
-            stringItems.add(item.getText());
+        for (WebElement title : featuredProductsTitles) {
+            productTitles.add(title.getText());
         }
 
-        return stringItems;
+        return productTitles;
+    }
+
+    public void addToCartFeaturedProductWithIndex(int index) {
+        addToCartButtons.get(index).click();
+    }
+
+    public HeaderSection getHeaderSection() {
+        return headerSection;
+    }
+
+    public FooterSection getFooterSection() {
+        return footerSection;
     }
 }
