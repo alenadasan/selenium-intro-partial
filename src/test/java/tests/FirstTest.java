@@ -15,7 +15,7 @@ public class FirstTest {
     public void canAddTwoPlusTwo() {
         int sum = 2 + 2;
 
-        assertEquals(sum,4);
+        assertEquals(sum, 4);
     }
 
     @Test

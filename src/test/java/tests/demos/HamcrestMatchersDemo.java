@@ -60,11 +60,11 @@ public class HamcrestMatchersDemo {
     void canDoSomeListAsserts() {
         List<String> list = Arrays.asList("Foo", "Bar", "Mar");
 
-        assertThat(list, hasItem("Foo"));        // true if list contains the items, possibly among others
+        assertThat(list, hasItem("Foo"));                // true if list contains the items, possibly among others
         assertThat(list, hasItems("Foo", "Bar"));        // true if list contains the items, possibly among others
         assertThat(list, contains("Foo", "Bar", "Mar")); // true if list items match EXACTLY - values, number and order of items
         assertThat(list, containsInAnyOrder("Bar", "Mar", "Foo"));
-                                                // true if list items match values and number of items, order of items may vary
+                                                         // true if list items match values and number of items, order of items may vary
 
         assertThat(list, everyItem(hasLength(3)));
         assertThat(list, hasSize(3));

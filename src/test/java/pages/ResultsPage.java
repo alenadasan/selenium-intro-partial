@@ -24,7 +24,7 @@ public class ResultsPage extends PageBase {
     public List<String> getProductTitles() {
         List<String> titles = new ArrayList<String>();
 
-        for(WebElement e : productTitleList) {
+        for (WebElement e : productTitleList) {
             titles.add(e.getText());
         }
 
