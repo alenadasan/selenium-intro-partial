@@ -50,6 +50,7 @@ public class LoginPage extends PageBase {
     }
 
     public String getErrorMessage() {
+        wait.until(ExpectedConditions.visibilityOf(errorMessage));
         return errorMessage.getText();
     }
 

@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,6 +23,8 @@ public class HeaderSection extends PageBase {
     private WebElement shoppingCartLink;
     @FindBy(className = "name")
     private List<WebElement> cartProductTitles;
+    @FindBy(xpath = "//div[@class='quantity']/span")
+    private List<WebElement> cartProductQuantities;
 
     @FindBy(id = "bar-notification")
     private WebElement barNotification;
@@ -35,6 +38,8 @@ public class HeaderSection extends PageBase {
 
     @FindBy(xpath = "//ul[@class='top-menu notmobile']/li/a")
     private List<WebElement> menuItems;
+    @FindBy(xpath = "//ul[@class='top-menu notmobile']//ul[@class='sublist first-level']//a")
+    private List<WebElement> submenuItems;
 
 
     public HeaderSection(WebDriver driver) {
@@ -79,6 +84,22 @@ public class HeaderSection extends PageBase {
         return titles;
     }
 
+    public List<Integer> getProductQuantitiesFromCart() {
+        viewCartContent();
+
+        try {
+            wait.until(ExpectedConditions.visibilityOfAllElements(cartProductQuantities));
+        } catch (TimeoutException e) {
+        }
+
+        List<Integer> quantities = new ArrayList<>();
+        for (WebElement qty : cartProductQuantities) {
+            quantities.add(Integer.valueOf(qty.getText()));
+        }
+
+        return quantities;
+    }
+
     private void viewCartContent() {
         Actions actions = new Actions(driver);
         actions.moveToElement(shoppingCartLink).perform();
@@ -98,25 +119,37 @@ public class HeaderSection extends PageBase {
         return new ResultsPage(driver);
     }
 
-    public void selectMenuItem(String itemName) {
+    public ResultsPage selectMenuItem(String categoryName) {
         List<String> stringItems = getMenuItems();
 
-        if (stringItems.contains(itemName)) {
-            int itemIndex = stringItems.indexOf(itemName);
+        if (stringItems.contains(categoryName)) {
+            int itemIndex = stringItems.indexOf(categoryName);
             menuItems.get(itemIndex).click();
         } else
-            fail("Menu item " + itemName + " not available");
+            fail("Main menu item " + categoryName + " not available");
+
+        return new ResultsPage(driver);
     }
-    //    TODO
-    public void selectMenuItem(String itemName, String subCategoryName) {
+
+    public ResultsPage selectMenuItem(String categoryName, String subCategoryName) {
         List<String> stringItems = getMenuItems();
 
-        if (stringItems.contains(itemName)) {
-            int itemIndex = stringItems.indexOf(itemName);
-            menuItems.get(itemIndex).click();
-
+        if (stringItems.contains(categoryName)) {
+            int itemIndex = stringItems.indexOf(categoryName);
+            Actions actions = new Actions(driver);
+            actions.moveToElement(menuItems.get(itemIndex)).perform();
         } else
-            fail("Menu item " + itemName + " not available");
+            fail("Main menu item " + categoryName + " not available");
+
+        try {
+            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.partialLinkText(subCategoryName))));
+            WebElement subCategoryMenuItem = driver.findElement(By.partialLinkText(subCategoryName));
+            subCategoryMenuItem.click();
+        } catch (TimeoutException e) {
+            fail("Secondary menu item " + categoryName + " not available");
+        }
+
+        return new ResultsPage(driver);
     }
 
     public List<String> getMenuItems() {

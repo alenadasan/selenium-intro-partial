@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.urlContains;
@@ -42,6 +43,9 @@ public class RegisterPage extends PageBase {
     @FindBy(id = "register-button")
     private WebElement registerButton;
 
+    @FindBy(className = "field-validation-error")
+    private List<WebElement> errorMessages;
+
     protected HeaderSection headerSection;
     protected FooterSection footerSection;
 
@@ -72,7 +76,7 @@ public class RegisterPage extends PageBase {
         fillInPassword(password);
         fillInConfirmedPassword(confirmedPassword);
 
-        clickRegister(registerButton);
+        clickRegister();
     }
 
     public void setGender(String gender) {
@@ -106,7 +110,7 @@ public class RegisterPage extends PageBase {
 
     public void setNewsletterSelection(boolean wantsNewsletter) {
         if (wantsNewsletter == true && newsletterSubscriptionCheckbox.isSelected() == false)
-            clickRegister(newsletterSubscriptionCheckbox);
+            newsletterSubscriptionCheckbox.click();
     }
 
     public void fillInPassword(String password) {
@@ -117,7 +121,7 @@ public class RegisterPage extends PageBase {
         passwordInput.sendKeys(confirmedPassword);
     }
 
-    public void clickRegister(WebElement registerButton) {
+    public void clickRegister() {
         registerButton.click();
     }
 
@@ -127,5 +131,14 @@ public class RegisterPage extends PageBase {
 
     public FooterSection getFooterSection() {
         return footerSection;
+    }
+
+    public List<String> getErrorMessages() {
+        List<String> errors = new ArrayList<>();
+        for (WebElement errorMessage : errorMessages) {
+            errors.add(errorMessage.getText());
+        }
+
+        return errors;
     }
 }

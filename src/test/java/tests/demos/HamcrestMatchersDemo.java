@@ -71,6 +71,15 @@ public class HamcrestMatchersDemo {
     }
 
     @Test
+    public void checkContainsMatcher() {
+        List<String> x = Arrays.asList("a", "b");
+        List<String> y = Arrays.asList("a", "b");
+
+        assertThat(x, contains("a", "b"));  // pass
+        assertThat(x, contains(y));         // fail
+    }
+
+    @Test
     void canDoSomeMoreListAsserts() {
         List<String> s3 = Arrays.asList("dolor", "sit", "amet", "sum");
 
