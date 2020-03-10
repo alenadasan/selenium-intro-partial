@@ -6,8 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -36,9 +36,14 @@ public class FooterSection extends PageBase {
         } catch (IndexOutOfBoundsException e) {
             fail("Social media link with index " + index + " was not available");
         }
-// TODO
-        Set<String> windowHandles = driver.getWindowHandles();
 
-        driver.switchTo().window(windowHandles.iterator().next());
+        List<String> windowHandles = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(windowHandles.get(1));
     }
+
+    public void switchBackToMainPageFromSocialMediaPage() {
+        List<String> windowHandles = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(windowHandles.get(0));
+    }
+
 }
